@@ -157,6 +157,14 @@ jobs:
 
           echo "All images built successfully!"
 
+      - name: Tag cu130-py312 image as latest
+        run: |
+          docker buildx imagetools create \
+            -t ghcr.io/percrepe/comfyui:latest \
+            ghcr.io/percrepe/comfyui:cu130-py312-${{ needs.detect-changes.outputs.release }}${{ needs.detect-changes.outputs.release_suffix }}
+
+          docker buildx imagetools inspect ghcr.io/percrepe/comfyui:latest
+
       - name: Verify images were pushed
         run: |
           RELEASE="${{ needs.detect-changes.outputs.release }}"
