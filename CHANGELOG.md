@@ -7,8 +7,15 @@ This image tracks upstream [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
 releases, so most entries correspond to a ComfyUI version bump along with any
 base image, Torch, xformers, or tooling changes that shipped alongside it.
 
-## [v0.34.0] - 2026-08-26
-- Bump ComfyUI to v0.34.0.
+## [Unreleased]
+- Changed: CUDA 12.8 images replaced with CUDA 13.0 images (cu130-py311 and
+  cu130-py312) using the `https://download.pytorch.org/whl/cu130` index with
+  Torch 2.11.0+cu130.
+- Changed: base images now come from `ghcr.io/percrepe/runpod-base`
+  (cuda13.0.1-torch2.11.0 tags, built from a fork of
+  `ashleykleynhans/runpod-base-images`), and images are published to
+  `ghcr.io/percrepe/comfyui`. The cu124 image variants and their build steps
+  have been removed.
 
 ## [v0.33.1] - 2026-08-14
 - Bump ComfyUI to v0.33.1.

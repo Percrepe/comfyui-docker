@@ -32,7 +32,7 @@ pip install setuptools --upgrade
 # list[bool] annotations, which torch 2.6.0 (used by the cu124 images) cannot
 # infer. Only na.py is affected; swapping in typing.List keeps the version at
 # 0.2.28 so ComfyUI's version-compatibility check stays happy. torch >= 2.7
-# (the cu128 images) handles builtin generics natively and needs no patch.
+# (the cu130 images) handles builtin generics natively and needs no patch.
 TORCH_MAJOR_MINOR="${TORCH_VERSION%+*}"
 TORCH_MINOR="${TORCH_MAJOR_MINOR#*.}"
 if [ "${TORCH_MAJOR_MINOR%%.*}" -lt 2 ] || { [ "${TORCH_MAJOR_MINOR%%.*}" -eq 2 ] && [ "${TORCH_MINOR%%.*}" -lt 7 ]; }; then

@@ -17,11 +17,8 @@
 
 | Image          | CUDA   | Python | Torch  | xformers     |
 |----------------|--------|--------|--------|--------------|
-| cu130-py312 *  | 13.0.1 | 3.12   | 2.12.1 | -            |
-| cu130-py311    | 13.0.1 | 3.11   | 2.12.1 | -            |
-| cu130-py313    | 13.0.1 | 3.13   | 2.12.1 | -            |
-| cu128-py312    | 12.8.1 | 3.12   | 2.11.0 | -            |
-| cu128-py311    | 12.8.1 | 3.11   | 2.11.0 | -            |
+| cu130-py312 *  | 13.0.1 | 3.12   | 2.11.0 | -            |
+| cu130-py311    | 13.0.1 | 3.11   | 2.11.0 | -            |
 | cu124-py312    | 12.4.1 | 3.12   | 2.6.0  | 0.0.29.post3 |
 | cu124-py311    | 12.4.1 | 3.11   | 2.6.0  | 0.0.29.post3 |
 
@@ -30,7 +27,7 @@
 ### All Images Include
 
 * Ubuntu 22.04 LTS
-* [ComfyUI](https://github.com/comfyanonymous/ComfyUI) v0.34.0
+* [ComfyUI](https://github.com/comfyanonymous/ComfyUI) v0.33.1
 * [Jupyter Lab](https://github.com/jupyterlab/jupyterlab)
 * [code-server](https://github.com/coder/code-server)
 * [runpodctl](https://github.com/runpod/runpodctl)
@@ -46,7 +43,7 @@
 This image is designed to work on [RunPod](https://runpod.io?ref=2xxro4sy).
 
 There are options for both CUDA 12.4 (for **non 5090** GPU types),
-and CUDA 12.8 (for the **RTX 5090** GPU type).
+and CUDA 13.0 (for the **RTX 5090** GPU type).
 
 There are also options for Python 3.11 and Python 3.12 for each since
 some ComfyUI custom nodes require Python 3.11 and don't work correctly
@@ -58,8 +55,8 @@ Click on the appropriate link below to deploy the template of your choice on Run
 |----------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
 | [CUDA 12.4 + Python 3.11](https://runpod.io/console/deploy?template=ymfa1ds0d1&ref=2xxro4sy) | Template with CUDA 12.4 and Python 3.11 for **non-RTX 5090** GPU types |
 | [CUDA 12.4 + Python 3.12](https://runpod.io/console/deploy?template=9eqyhd7vs0&ref=2xxro4sy) | Template with CUDA 12.4 and Python 3.12 for **non-RTX 5090** GPU types |
-| [CUDA 12.8 + Python 3.11](https://runpod.io/console/deploy?template=moapg9g7mn&ref=2xxro4sy) | Template with CUDA 12.8 and Python 3.11 for **RTX 5090** GPU type      |
-| [CUDA 12.8 + Python 3.12](https://runpod.io/console/deploy?template=jv061dyevn&ref=2xxro4sy) | Template with CUDA 12.8 and Python 3.12 for **RTX 5090** GPU type      |
+| [CUDA 13.0 + Python 3.11](https://runpod.io/console/deploy?template=moapg9g7mn&ref=2xxro4sy) | Template with CUDA 13.0 and Python 3.11 for **RTX 5090** GPU type      |
+| [CUDA 13.0 + Python 3.12](https://runpod.io/console/deploy?template=jv061dyevn&ref=2xxro4sy) | Template with CUDA 13.0 and Python 3.12 for **RTX 5090** GPU type      |
 
 
 ## Building the Docker image
@@ -82,7 +79,7 @@ git clone https://github.com/ashleykleynhans/comfyui-docker.git
 # Log in to Docker Hub
 docker login
 
-# Build the default image (CUDA 12.8 and Python 3.12), tag the image, and push the image to Docker Hub
+# Build the default image (CUDA 13.0 and Python 3.12), tag the image, and push the image to Docker Hub
 docker buildx bake -f docker-bake.hcl --push
 
 # OR build a different image (eg. CUDA 12.4 and Python 3.11), tag the image, and push the image to Docker Hub

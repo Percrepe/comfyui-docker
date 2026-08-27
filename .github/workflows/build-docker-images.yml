@@ -124,8 +124,8 @@ jobs:
           target "default" {
             inherits = ["default"]
             tags = [
-              "ghcr.io/${{ github.repository_owner }}/${{ needs.detect-changes.outputs.app }}:${{ needs.detect-changes.outputs.release }}",
-              "ghcr.io/${{ github.repository_owner }}/${{ needs.detect-changes.outputs.app }}:latest"
+              "ghcr.io/percrepe/${{ needs.detect-changes.outputs.app }}:${{ needs.detect-changes.outputs.release }}",
+              "ghcr.io/percrepe/${{ needs.detect-changes.outputs.app }}:latest"
             ]
             attest = [
               "type=provenance,mode=max",
@@ -140,45 +140,43 @@ jobs:
       - name: Build and push all images (serially)
         env:
           REGISTRY: ghcr.io
-          REGISTRY_USER: ${{ github.repository_owner }}
+          REGISTRY_USER: percrepe
         run: |
           # Build images one at a time to avoid resource exhaustion
           # Each image is 12-14GB so parallel builds would fail
 
-          echo "Building cu124-py311..."
-          docker buildx bake -f docker-bake.hcl -f docker-bake.override.hcl --push cu124-py311
+          echo "Building cu130-py311..."
+          docker buildx bake -f docker-bake.hcl -f docker-bake.override.hcl --push cu130-py311
           docker buildx prune -af
           df -h
 
-          echo "Building cu124-py312..."
-          docker buildx bake -f docker-bake.hcl -f docker-bake.override.hcl --push cu124-py312
-          docker buildx prune -af
-          df -h
-
-          echo "Building cu128-py311..."
-          docker buildx bake -f docker-bake.hcl -f docker-bake.override.hcl --push cu128-py311
-          docker buildx prune -af
-          df -h
-
-          echo "Building cu128-py312..."
-          docker buildx bake -f docker-bake.hcl -f docker-bake.override.hcl --push cu128-py312
+          echo "Building cu130-py312..."
+          docker buildx bake -f docker-bake.hcl -f docker-bake.override.hcl --push cu130-py312
           docker buildx prune -af
           df -h
 
           echo "All images built successfully!"
+
+      - name: Tag cu130-py312 image as latest
+        run: |
+          docker buildx imagetools create \
+            -t ghcr.io/percrepe/comfyui:latest \
+            ghcr.io/percrepe/comfyui:cu130-py312-${{ needs.detect-changes.outputs.release }}${{ needs.detect-changes.outputs.release_suffix }}
+
+          docker buildx imagetools inspect ghcr.io/percrepe/comfyui:latest
 
       - name: Verify images were pushed
         run: |
           RELEASE="${{ needs.detect-changes.outputs.release }}"
           RELEASE_SUFFIX="${{ needs.detect-changes.outputs.release_suffix }}"
           REGISTRY="ghcr.io"
-          REGISTRY_USER="${{ github.repository_owner }}"
+          REGISTRY_USER="percrepe"
           APP="${{ needs.detect-changes.outputs.app }}"
 
           # Wait for registry to update
           sleep 10
 
-          VARIANTS=("cu124-py311" "cu124-py312" "cu128-py311" "cu128-py312")
+          VARIANTS=("cu130-py311" "cu130-py312")
           for VARIANT in "${VARIANTS[@]}"; do
             IMAGE="${REGISTRY}/${REGISTRY_USER}/${APP}:${VARIANT}-${RELEASE}${RELEASE_SUFFIX}"
             echo "Verifying image: $IMAGE"
@@ -192,15 +190,13 @@ jobs:
           RELEASE="${{ needs.detect-changes.outputs.release }}"
           RELEASE_SUFFIX="${{ needs.detect-changes.outputs.release_suffix }}"
           REGISTRY="ghcr.io"
-          REGISTRY_USER="${{ github.repository_owner }}"
+          REGISTRY_USER="percrepe"
           APP="${{ needs.detect-changes.outputs.app }}"
 
           # Create array of images
           IMAGES=(
-            "${REGISTRY}/${REGISTRY_USER}/${APP}:cu124-py311-${RELEASE}${RELEASE_SUFFIX}"
-            "${REGISTRY}/${REGISTRY_USER}/${APP}:cu124-py312-${RELEASE}${RELEASE_SUFFIX}"
-            "${REGISTRY}/${REGISTRY_USER}/${APP}:cu128-py311-${RELEASE}${RELEASE_SUFFIX}"
-            "${REGISTRY}/${REGISTRY_USER}/${APP}:cu128-py312-${RELEASE}${RELEASE_SUFFIX}"
+            "${REGISTRY}/${REGISTRY_USER}/${APP}:cu130-py311-${RELEASE}${RELEASE_SUFFIX}"
+            "${REGISTRY}/${REGISTRY_USER}/${APP}:cu130-py312-${RELEASE}${RELEASE_SUFFIX}"
           )
 
           # Create newline-separated list
