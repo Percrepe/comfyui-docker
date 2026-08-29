@@ -94,26 +94,6 @@ jobs:
           REGISTRY: ghcr.io
           REGISTRY_USER: ${{ github.repository_owner }}
         run: |
-          echo "Building cu124-py311..."
-          docker buildx bake -f docker-bake.hcl --push cu124-py311
-          docker buildx prune -af
-          df -h
-
-          echo "Building cu124-py312..."
-          docker buildx bake -f docker-bake.hcl --push cu124-py312
-          docker buildx prune -af
-          df -h
-
-          echo "Building cu128-py311..."
-          docker buildx bake -f docker-bake.hcl --push cu128-py311
-          docker buildx prune -af
-          df -h
-
-          echo "Building cu128-py312..."
-          docker buildx bake -f docker-bake.hcl --push cu128-py312
-          docker buildx prune -af
-          df -h
-
           echo "Building cu130-py311..."
           docker buildx bake -f docker-bake.hcl --push cu130-py311
           docker buildx prune -af
@@ -138,7 +118,7 @@ jobs:
 
           sleep 10
 
-          VARIANTS=("cu124-py311" "cu124-py312" "cu128-py311" "cu128-py312" "cu130-py311" "cu130-py312" "cu130-py313")
+          VARIANTS=("cu130-py311" "cu130-py312" "cu130-py313")
           for VARIANT in "${VARIANTS[@]}"; do
             IMAGE="ghcr.io/${{ github.repository_owner }}/${APP}:${VARIANT}-${RELEASE}"
             echo "Verifying image: $IMAGE"
