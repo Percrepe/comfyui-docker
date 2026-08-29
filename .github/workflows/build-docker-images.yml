@@ -90,9 +90,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push all images (serially)
-        env:
-          REGISTRY: ghcr.io
-          REGISTRY_USER: ${{ github.repository_owner }}
         run: |
           echo "Building cu130-py311..."
           docker buildx bake -f docker-bake.hcl --push cu130-py311
