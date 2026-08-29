@@ -1,48 +1,56 @@
 ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
 
-# Copy the build scripts
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    wget \
+    curl \
+    git \
+    python3 \
+    python3-pip \
+    python3-venv \
+    jq \
+    tmux \
+    htop \
+    nvtop \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN ln -sf /usr/bin/python3 /usr/bin/python
+
 WORKDIR /
 COPY --chmod=755 build/* ./
 
-# Install ComfyUI
 ARG TORCH_VERSION
 ARG XFORMERS_VERSION
 ARG INDEX_URL
 ARG COMFYUI_VERSION
 RUN /install_comfyui.sh
 
-# Install Application Manager
 ARG APP_MANAGER_VERSION
 RUN /install_app_manager.sh
 COPY app-manager/config.json /app-manager/public/config.json
 COPY --chmod=755 app-manager/*.sh /app-manager/scripts/
 
-# Install CivitAI Model Downloader
 ARG CIVITAI_DOWNLOADER_VERSION
 RUN /install_civitai_model_downloader.sh
 
-# Cleanup installation scripts
 RUN rm -f /install_*.sh
 
-# Remove existing SSH host keys
-RUN rm -f /etc/ssh/ssh_host_*
-
-# NGINX Proxy
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
-# Set template version
 ARG RELEASE
 ENV TEMPLATE_VERSION=${RELEASE}
 
-# Set the main venv path
 ARG VENV_PATH
 ENV VENV_PATH=${VENV_PATH}
 
-# Copy the scripts
 WORKDIR /
 COPY --chmod=755 scripts/* ./
 
-# Start the container
+EXPOSE 8080
+EXPOSE 8888
+EXPOSE 7777
+
 SHELL ["/bin/bash", "--login", "-c"]
 CMD [ "/start.sh" ]

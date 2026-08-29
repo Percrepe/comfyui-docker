@@ -19,11 +19,11 @@ variable "RELEASE_SUFFIX" {
 }
 
 variable "BASE_IMAGE_REPOSITORY" {
-    default = "ghcr.io/percrepe/runpod-base"
+    default = "nvidia/cuda"
 }
 
 variable "BASE_IMAGE_VERSION" {
-    default = "2.12.1"
+    default = "13.0.1-cudnn-devel-ubuntu22.04"
 }
 
 variable "APP_MANAGER_VERSION" {
@@ -51,7 +51,7 @@ target "cu130-py311" {
     tags = ["${REGISTRY}/${REGISTRY_USER}/${APP}:cu130-py311-${RELEASE}${RELEASE_SUFFIX}"]
     args = {
         RELEASE                    = "${RELEASE}"
-        BASE_IMAGE                 = "${BASE_IMAGE_REPOSITORY}:${BASE_IMAGE_VERSION}-python3.11-cuda13.0.1-torch2.12.1"
+        BASE_IMAGE                 = "${BASE_IMAGE_REPOSITORY}:${BASE_IMAGE_VERSION}"
         INDEX_URL                  = "https://download.pytorch.org/whl/cu130"
         TORCH_VERSION              = "2.12.1+cu130"
         COMFYUI_VERSION            = "${RELEASE}"
@@ -66,7 +66,7 @@ target "cu130-py312" {
     tags = ["${REGISTRY}/${REGISTRY_USER}/${APP}:cu130-py312-${RELEASE}${RELEASE_SUFFIX}"]
     args = {
         RELEASE                    = "${RELEASE}"
-        BASE_IMAGE                 = "${BASE_IMAGE_REPOSITORY}:${BASE_IMAGE_VERSION}-python3.12-cuda13.0.1-torch2.12.1"
+        BASE_IMAGE                 = "${BASE_IMAGE_REPOSITORY}:${BASE_IMAGE_VERSION}"
         INDEX_URL                  = "https://download.pytorch.org/whl/cu130"
         TORCH_VERSION              = "2.12.1+cu130"
         COMFYUI_VERSION            = "${RELEASE}"
@@ -81,7 +81,7 @@ target "cu130-py313" {
     tags = ["${REGISTRY}/${REGISTRY_USER}/${APP}:cu130-py313-${RELEASE}${RELEASE_SUFFIX}"]
     args = {
         RELEASE                    = "${RELEASE}"
-        BASE_IMAGE                 = "${BASE_IMAGE_REPOSITORY}:${BASE_IMAGE_VERSION}-python3.13-cuda13.0.1-torch2.12.1"
+        BASE_IMAGE                 = "${BASE_IMAGE_REPOSITORY}:${BASE_IMAGE_VERSION}"
         INDEX_URL                  = "https://download.pytorch.org/whl/cu130"
         TORCH_VERSION              = "2.12.1+cu130"
         COMFYUI_VERSION            = "${RELEASE}"
